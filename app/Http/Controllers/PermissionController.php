@@ -10,6 +10,7 @@ use Kreait\Firebase\Messaging\Notification;
 use Resend\Laravel\Facades\Resend;
 use App\Mail\ApprovedPermissionConfirmation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -54,12 +55,15 @@ class PermissionController extends Controller
         $reason = $permission->reason;
         // $this->sendNotificationToUser($permission->user_id, 'Status Izin anda adalah ' . $str);
         if ($request->is_approved == 1) {
-            Resend::emails()->send([
-                'from' =>  'onboarding@resend.dev',
-                'to' => $user->email,
-                'subject' => 'Approved Permission - ' . $user->name,
-                'html' => (new ApprovedPermissionConfirmation($user, $date, $reason))->render(),
-            ]);
+            // Resend::emails()->send([
+            //     'from' =>  'onboarding@resend.dev',
+            //     'to' => $user->email,
+            //     'subject' => 'Approved Permission - ' . $user->name,
+            //     'html' => (new ApprovedPermissionConfirmation($user, $date, $reason))->render(),
+            // ]);
+
+            //sent email with Mail
+            Mail::to($user->email)->send(new ApprovedPermissionConfirmation($user, $date, $reason));
         }
         return redirect()->route('permissions.index')->with('success', 'Permission updated successfully');
     }
