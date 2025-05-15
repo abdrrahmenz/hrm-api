@@ -46,3 +46,9 @@ Route::get('/api-user/{id}', [App\Http\Controllers\Api\UserController::class, 'g
 Route::post('/api-user/edit', [App\Http\Controllers\Api\UserController::class, 'updateProfile'])->middleware('auth:sanctum');
 
 Route::post('/check-qr', [App\Http\Controllers\Api\QrAbsenController::class, 'checkQR'])->middleware('auth:sanctum');
+
+//upload image - no auth required
+Route::post('/upload-image', [App\Http\Controllers\Api\ImageUploadController::class, 'index']);
+
+//get all images - no auth required
+Route::get('/images', [App\Http\Controllers\Api\ImageUploadController::class, 'getImages']);
